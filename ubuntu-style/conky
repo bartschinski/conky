@@ -35,10 +35,10 @@ cpu_avg_samples 1
 net_avg_samples 1
 
 override_utf8_locale no
-use_spacer yes
+use_spacer right
 
 mpd_host localhost
-mpd_portPort 6060
+mpd_port 6060
 
 default_color FFFFFF
 default_shade_color black
@@ -61,8 +61,10 @@ $font${color2}${alignc}$nodename $sysname $kernel $machine
 ${color3}$stippled_hr
 ${color4}Processes:$color $processes  ${color4}Running:$color $running_processes ${color4}Up:$color $uptime
 ${color4}threads:$color $threads ${color4}Users:$color $user_number 
-${color4}CPU0:$color ${freq_g 1}${color3}GHz ${color5}|$color ${cpu cpu0}${color3}% ${color5}${cpubar cpu0}
-${color4}CPU1:$color ${freq_g 2}${color3}GHz ${color5}|$color ${cpu cpu1}${color3}% ${color5}${cpubar cpu1}
+${color4}CPU1:$color ${freq_g 1}${color3}GHz ${color5}|$color ${cpu cpu1}${color3}% ${color5}${cpubar cpu1}
+${color4}CPU2:$color ${freq_g 2}${color3}GHz ${color5}|$color ${cpu cpu2}${color3}% ${color5}${cpubar cpu2}
+${color4}CPU3:$color ${freq_g 3}${color3}GHz ${color5}|$color ${cpu cpu3}${color3}% ${color5}${cpubar cpu3}
+${color4}CPU4:$color ${freq_g 4}${color3}GHz ${color5}|$color ${cpu cpu4}${color3}% ${color5}${cpubar cpu4}
 ${color4}Name                       PID       CPU${color3}%${color4}   MEM${color3}%
 ${font Monospace:size=8}$color${top name 1}     ${top pid 1}  ${top cpu 1}  ${top mem 1}
 ${top name 2}     ${top pid 2}  ${top cpu 2}  ${top mem 2}
@@ -74,13 +76,12 @@ ${color7}Swap: $swap/$swapmax - $swapperc% ${swapbar}
 ${color3}$stippled_hr
 $font${color4}Connections${alignr}${color5}In:$color ${tcp_portmon 1 32767 count}  ${color5}Out:$color ${tcp_portmon 32768 61000 count}   ${color5}ALL:$color ${tcp_portmon 1 65535 count}
 ${color4}Traffic 
-${color5}${time %B} ${alignc}${color3}Down: $color${execi 60 vnstat -m | grep "`LC_ALL=C date +"%b '%y"`" | awk '{print $3 $4}'} ${color3}${alignr}Up: $color${execi 60 vnstat -m | grep "`LC_ALL=C date +"%b '%y"`" | awk '{print $6 $7}'}
+${color5}${time %B} ${alignc}${color3}Down: $color${execi 60 vnstat -m -i wlp3s0 | grep "`LC_ALL=C date +"%b '%y"`" | awk '{print $3 $4}'} ${color3}${alignr}Up: $color${execi 60 vnstat -m -i wlp3s0 | grep "`LC_ALL=C date +"%b '%y"`" | awk '{print $6 $7}'}
 ${color5}Today ${alignc}${color3}Down:$color ${execi 60 vnstat | grep "today" | awk '{print $2 $3}'} ${color3}${alignr}Up:$color ${execi 60 vnstat | grep "today" | awk '{print $5 $6}'}
-${color5}Now ${alignc}${color3}Down:$color ${downspeed eth0} ${color3} ${alignr}Up:$color ${upspeed eth0}
-${downspeedgraph eth0 32,120 97418F 009bf9} ${offset 40} ${upspeedgraph eth0 32,120 97418F 009bf9}
+${color5}Now ${alignc}${color3}Down:$color ${downspeed wlp3s0} ${color3} ${alignr}Up:$color ${upspeed wlp3s0}
+${downspeedgraph wlp3s0 32,120 97418F 009bf9} ${offset 40} ${upspeedgraph wlp3s0 32,120 97418F 009bf9}
 ${color4}IPs:
-${color5}Local: $color ${addr eth0} ${alignr}${color5}Global: $color ${execi 60 wget http://v4.ipv6-test.com/api/myip.php -q -O -}
+${color5}Local: $color ${addr wlp3s0} ${alignr}${color5}Global: $color ${execi 60 wget http://v4.ipv6-test.com/api/myip.php -q -O -}
 ${color3}$stippled_hr
 ${color4}Festplaten
-${color5}SSD:$color  ${fs_used /}/${fs_size /}  ${color7}${fs_bar /}
-${color5}HDD:$color  ${fs_used /home/gorden/Daten}/${fs_size /home/gorden/Daten}  ${color7}${fs_bar /home/gorden/Daten}
+${color5}Festplatte:$color  ${fs_used /}/${fs_size /}  ${color7}${fs_bar /}
