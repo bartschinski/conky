@@ -9,6 +9,9 @@
 -- include cairo grafic libary
 --------------------------------------------------
 require 'cairo'
+require 'ssq'
+require 'util'
+require 'ark'
 
 
 --------------------------------------------------
@@ -19,8 +22,10 @@ colors = {
   orange_light  = {r = 221, g = 72,   b = 20,   a = 0.5},
   blue          = {r = 0,   g = 136,  b = 204,  a = 1},
   blue_light    = {r = 0,   g = 136,  b = 204,  a = 0.5},
-  green         = {r = 170, g = 187,  b = 170,  a = 1},
-  green_light   = {r = 170, g = 187,  b = 170,  a = 0.5}
+  green         = {r = 18,  g = 221,  b = 0,    a = 1},
+  green_light   = {r = 18,  g = 221,  b = 0,    a = 0.5},
+  gray          = {r = 170, g = 187,  b = 170,  a = 1},
+  gray_light    = {r = 170, g = 187,  b = 170,  a = 0.5}
 }
 
 config_cpu = {
@@ -30,8 +35,8 @@ config_cpu = {
 }
 
 config_mem = {
-  color = 'blue',
-  color_swap = 'green',
+  color = 'green',
+  color_swap = 'gray',
   thickness = 30
 }
 
@@ -65,9 +70,6 @@ font = {
   slant = CAIRO_FONT_SLANT_NORMAL
 }
 
-udpServer = {
-  ark = { host = 'gontrix.de', port = '27015' }
-}
 
 --------------------------------------------------
 -- set the variables on the initialize
@@ -229,6 +231,12 @@ end
 
 --------------------------------------------------
 -- draw text
+-- 
+-- @param text    Text for draw
+-- @param color   Color name
+-- @param size    Text size
+-- @param pos_x   X position
+-- @param pos_y   Y position
 --------------------------------------------------
 function drawText(text, color, size, pos_x, pos_y)
   cairo_select_font_face(display, font['type'], font['face'], font['slant']);
@@ -243,55 +251,15 @@ end
 
 
 --------------------------------------------------
--- convert text to hex
---------------------------------------------------
-function fromhex(str)
-    return (str:gsub('..', function (cc)
-        return string.char(tonumber(cc, 16))
-    end))
-end
-
-
---------------------------------------------------
--- convert hex to text
---------------------------------------------------
-function tohex(str)
-    return (str:gsub('.', function (c)
-        return string.format('%02X', string.byte(c))
-    end))
-end
-
-
---------------------------------------------------
--- udp request
---------------------------------------------------
-function udpRequest(text, serverName)
-  local socket = require("socket");
-  local ip = socket.dns.toip(udpServer[serverName]['host']);
-  local udp = socket.udp();
-  local response = "";
-
-  udp:setpeername(ip, udpServer[serverName]['port']);
-  udp:settimeout(3);
-
-  local sent, err = udp:send(text);
-
-  if not err then
-    local dgram, err = udp:receive();
-    
-    if dgram then
-      response = tohex(dgram);
-    end
-  end
-  
-  return response;
-end
-
-
---------------------------------------------------
 -- display image
+-- 
+-- @param name    Image path and name
+-- @param scale   Scale of image 1.0 = 100%
+-- @param pos_x   X position
+-- @param pos_y   Y position
 --------------------------------------------------
 function displayImage(name, scale, pos_x, pos_y)
+    name = 'img/'..name
     local image = cairo_image_surface_create_from_png(name);
     cairo_scale(display, scale, scale);
     cairo_set_source_surface(display, image, pos_x / scale, pos_y / scale);
@@ -300,88 +268,26 @@ function displayImage(name, scale, pos_x, pos_y)
     cairo_scale(display, 1.0 / scale, 1.0 / scale);
 end
 
+
 --------------------------------------------------
--- get the Player from ark server
+-- draw the ark section
 --------------------------------------------------
-function getArkPlayers()
-  local serverName = 'ark';
-  local text = fromhex('FFFFFFFF55071FF903');
-  local token = udpRequest(fromhex('FFFFFFFF55FFFFFFFF'), serverName);
-  local replace = '';
-  token, replace = string.gsub(token, 'FFFFFFFF41', 'FFFFFFFF55');
-  
-  local response = udpRequest(fromhex(token), serverName);
-  response, replace = string.gsub(response, 'FFFFFFFF440100', '');
-  response = string.sub(response, 13, -1);
-    
-  local players = {};
-  local i = 1;
-  
-  while 1 do
-    response = string.sub(response, 3, -1);
-    local first, last = string.find(response, '([^0][0][0][^0])');
-    local firstRecord = string.sub(response, 0, first);
-    local f, l = string.find(firstRecord, '0000');
-    
-    players[i] = fromhex(string.sub(firstRecord, 0, f - 1));
-    response = string.gsub(response, firstRecord, '');
-    
-    i = i + 1;
-    if string.len(response) == 0 then break; end
-  end
-  
-  return players;
-end
-
-gameConf = {
-  ark = {
-    players = {},
-    map = '',
-    maxPlayers = '0'
-  }
-}
-
-
-function getArkInfo()
-  local text = fromhex('FFFFFFFF')..'TSource Engine Query'..fromhex('00');
-  local response = udpRequest(text, 'ark');
-  
-  local first, last = string.find(response, '([^0][0][0][^0])');
-  local map = string.sub(response, first + 3, -1);
-  first, last = string.find(map, '([^0][0][0][^0])');
-  map = fromhex(string.sub(map, 0, first));
-  
-  local maxPlayer = response;
-  first, last = string.find(maxPlayer, '4E554D4F50454E505542434F4E4E3A');
-  maxPlayer = string.sub(maxPlayer, last + 1, -1);
-  first, last = string.find(maxPlayer, '2C');
-  maxPlayer = fromhex(string.sub(maxPlayer, 0, first - 1));
-  
-  return map, maxPlayer
-end
-
 function displayArkServer()
   local height = offset(0) + 200;
-
-  if conky_parse('${updates}') % 60 == 0 then
-    gameConf['ark']['map'], gameConf['ark']['maxPlayers'] = getArkInfo();
-    gameConf['ark']['players'] = getArkPlayers();
-  end
-  
+  local countPlayer = 0;
+  local arkInfo = ark.getInfo();
   
   displayImage('ark.png', 0.25, config['width'], height);
+  drawText('ARK: Survival Evolved', config_mem['color_swap'], 30, config['width'] + 80, height + 30);
+  drawText('Player', config_mem['color_swap'], 24, config['width'] + 150, height + 90);
   
-  drawText('Player', config_mem['color_swap'], 24, config['width'] + 150, height + 50);
-  
-  local countPlayer = 0;
-  
-  for index, player in pairs(gameConf['ark']['players']) do
-    drawText(player, config_mem['color_swap'], 20, config['width'] + 150, height + 50 + (30 * index));
+  for index, player in pairs(arkInfo['players']) do
+    drawText(player, config_mem['color_swap'], 20, config['width'] + 150, height + 90 + (30 * index));
     countPlayer = countPlayer + 1;
   end
   
-  drawText(gameConf['ark']['map'], config_mem['color_swap'], 24, config['width'], height + 90);
-  drawText(countPlayer..' / '..gameConf['ark']['maxPlayers'], config_mem['color_swap'], 24, config['width'], height + 120);
+  drawText(arkInfo['map'], config_mem['color_swap'], 24, config['width'], height + 90);
+  drawText(countPlayer..' / '..arkInfo['maxPlayers'], config_mem['color_swap'], 24, config['width'], height + 120);
 end
 
 
@@ -398,13 +304,11 @@ function conky_main()
 
   set_init_param();
 
-  if tonumber(conky_parse('${updates}')) > 5 then
-    draw_cpu();
-    draw_mem();
-    draw_clock();
-    
-    displayArkServer();
-  end
+  draw_cpu();
+  draw_mem();
+  draw_clock();
+  
+  displayArkServer();
 
   cairo_surface_destroy(cs);
   cairo_destroy(display);
