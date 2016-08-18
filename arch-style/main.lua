@@ -282,7 +282,7 @@ function displayArkServer()
   drawText('Player', config_mem['color_swap'], 24, config['width'] + 150, height + 90);
   
   for index, player in pairs(arkInfo['players']) do
-    drawText(player, config_mem['color_swap'], 20, config['width'] + 150, height + 90 + (30 * index));
+    drawText(player['player'], config_mem['color_swap'], 20, config['width'] + 150, height + 90 + (30 * index));
     countPlayer = countPlayer + 1;
   end
   

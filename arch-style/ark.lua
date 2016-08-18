@@ -12,44 +12,6 @@ ark.gameInfo = {
 
 
 --------------------------------------------------
--- get the Player from ark server
--- 
--- @return  Players in array
---------------------------------------------------
-function ark.getPlayers()
-  local serverName = 'ark';
-  local text = util.fromhex('FFFFFFFF55071FF903');
-  local token = ssq.request(util.fromhex('FFFFFFFF55FFFFFFFF'), ark.server['host'], ark.server['port']);
-  local replace = '';
-  token, replace = string.gsub(token, 'FFFFFFFF41', 'FFFFFFFF55');
-  
-  local response = ssq.request(util.fromhex(token), ark.server['host'], ark.server['port']);
-  response, replace = string.gsub(response, 'FFFFFFFF440100', '');
-  response = string.sub(response, 13, -1);
-    
-  local players = {};
-  local i = 1;
-  
-  while 1 do
-    response = string.sub(response, 3, -1);
-    local first, last = string.find(response, '([^0][0][0][^0])');
-    local firstRecord = string.sub(response, 0, first);
-    local f, l = string.find(firstRecord, '0000');
-    
-    if f == nil then break; end
-    
-    players[i] = util.fromhex(string.sub(firstRecord, 0, f - 1));
-    response = string.gsub(response, firstRecord, '');
-    
-    i = i + 1;
-    if string.len(response) == 0 then break; end
-  end
-  
-  return players;
-end
-
-
---------------------------------------------------
 -- get the map and max player
 -- 
 -- @return  map, maxPlayer  return the map name and max players
@@ -85,7 +47,7 @@ end
 function ark.getInfo()
   if conky_parse('${updates}') % 60 == 0 or ark.gameInfo['map'] == '' then
     ark.gameInfo['map'], ark.gameInfo['maxPlayers'] = ark.getServerInfo();
-    ark.gameInfo['players'] = ark.getPlayers();
+    ark.gameInfo['players'] = ssq.getPlayerInfo(ark.server['host'], ark.server['port']);
   end
   
   return ark.gameInfo;
