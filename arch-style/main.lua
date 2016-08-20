@@ -11,7 +11,9 @@
 require 'cairo'
 require 'ssq'
 require 'util'
+
 require 'ark'
+require 'starbound'
 
 
 --------------------------------------------------
@@ -292,6 +294,28 @@ end
 
 
 --------------------------------------------------
+-- draw the ark section
+--------------------------------------------------
+function displayStarboundServer()
+  local height = offset(0) + 400;
+  local countPlayer = 0;
+  local starboundInfo = starbound.getInfo();
+  
+  displayImage('starbound.png', 0.43, config['width'], height);
+  --drawText('ARK: Survival Evolved', config_mem['color_swap'], 30, config['width'] + 80, height + 30);
+  drawText('Player', config_mem['color_swap'], 24, config['width'] + 150, height + 90);
+  
+  for index, player in pairs(starboundInfo['players']) do
+    drawText(player['player'], config_mem['color_swap'], 20, config['width'] + 150, height + 90 + (30 * index));
+    countPlayer = countPlayer + 1;
+  end
+  
+  drawText('v'..starboundInfo['version'], config_mem['color_swap'], 24, config['width'], height + 90);
+  drawText(countPlayer..' / '..starboundInfo['maxPlayers'], config_mem['color_swap'], 24, config['width'], height + 120);
+end
+
+
+--------------------------------------------------
 -- main function call from conky
 --------------------------------------------------
 function conky_main()
@@ -309,6 +333,7 @@ function conky_main()
   draw_clock();
   
   displayArkServer();
+  displayStarboundServer();
 
   cairo_surface_destroy(cs);
   cairo_destroy(display);
