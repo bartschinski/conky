@@ -1,71 +1,105 @@
 
-background yes
-use_xft yes
+conky.config = {
+    background = true,
 
-update_interval 1
-total_run_times 0
+    update_interval = 1.0,
+    total_run_times = 0,
 
-own_window yes
-own_window_type normal
-own_window_transparent yes
-own_window_colour black
-own_window_hints undecorated,skip_pager,skip_taskbar
+    cpu_avg_samples = 2,
+    net_avg_samples = 2,
+    temperature_unit = 'celsius',
 
-double_buffer yes
-no_buffers yes
+    double_buffer = true,
+    no_buffers = true,
 
-draw_shades no
-draw_outline no
-draw_borders no
-draw_graph_borders no
+    gap_x = 12,
+    gap_y = 12,
+    minimum_height = 260,
+    minimum_width = 5,
 
-stippled_borders 0
-border_width 0
+    own_window = true,
+    own_window_class = 'Conky',
+    own_window_type = 'override',
+    own_window_transparent = true,
 
-xftfont Ubuntu Bitstream Vera Sans Mono:size=9
-xftalpha 0.8
-alignment top_right
-uppercase no
+    border_width = 0,
+    draw_borders = false,
+    draw_graph_borders = false,
+    draw_outline = false,
+    draw_shades = false,
 
-minimum_size 260 5
-gap_x 12
-gap_y 12
+    alignment = 'top_right',
 
-cpu_avg_samples 1
-net_avg_samples 1
+    use_xft = true,
+    xftalpha = 0.8,
+    font = 'ubuntu Visitor TT1 BRK:size=12',
+    uppercase = false,
 
-override_utf8_locale no
-use_spacer right
+    default_color = 'FFFFFF',
+    default_shade_color = '000000',
 
-mpd_host localhost
-mpd_port 6060
+    color1 = 'DD4814',
+    color2 = 'DD2222',
+    color3 = 'AEA79F',
+    color4 = '97418F',
+    color5 = '009bf9',
+    color6 = '7C5E3C',
+    color7 = 'FF6E00',
+    color8 = '12DD00',
+    color9 = '028D00'
+}
 
-default_color FFFFFF
-default_shade_color black
-default_outline_color black
 
-color1 DD4814
-color2 DD2222
-color3 AEA79F
-color4 97418F
-color5 009bf9
-color6 7C5E3C
-color7 FF6E00
-color8 12DD00
-color9 028D00
-
-TEXT
-
+conky.text = [[
 ${font Verdana:style=Bold:size=16}${color1}${alignc}${time %a %d. %b %k:%M}
 $font${color2}${alignc}$nodename $sysname $kernel $machine
 ${color3}$stippled_hr
-${color4}Processes:$color $processes  ${color4}Running:$color $running_processes ${color4}Up:$color $uptime
-${color4}threads:$color $threads ${color4}Users:$color $user_number 
+${color4}Processes:$color $processes      ${color4}Running:$color $running_processes          ${color4}Up:$color $uptime
+${color4}Threads:$color $threads        ${color4}Users:$color $user_number
+
+${color4}CPU0:$color ${freq_g 0}${color3}GHz ${color5}|$color ${cpu cpu0}${color3}% ${color5}${cpubar cpu0}
 ${color4}CPU1:$color ${freq_g 1}${color3}GHz ${color5}|$color ${cpu cpu1}${color3}% ${color5}${cpubar cpu1}
 ${color4}CPU2:$color ${freq_g 2}${color3}GHz ${color5}|$color ${cpu cpu2}${color3}% ${color5}${cpubar cpu2}
 ${color4}CPU3:$color ${freq_g 3}${color3}GHz ${color5}|$color ${cpu cpu3}${color3}% ${color5}${cpubar cpu3}
 ${color4}CPU4:$color ${freq_g 4}${color3}GHz ${color5}|$color ${cpu cpu4}${color3}% ${color5}${cpubar cpu4}
-${color4}Name                       PID       CPU${color3}%${color4}   MEM${color3}%
+${color4}CPU5:$color ${freq_g 5}${color3}GHz ${color5}|$color ${cpu cpu5}${color3}% ${color5}${cpubar cpu5}
+${color4}CPU6:$color ${freq_g 6}${color3}GHz ${color5}|$color ${cpu cpu6}${color3}% ${color5}${cpubar cpu6}
+${color4}CPU7:$color ${freq_g 7}${color3}GHz ${color5}|$color ${cpu cpu7}${color3}% ${color5}${cpubar cpu7}
+${color4}CPU8:$color ${freq_g 8}${color3}GHz ${color5}|$color ${cpu cpu8}${color3}% ${color5}${cpubar cpu8}
+${color4}CPU9:$color ${freq_g 9}${color3}GHz ${color5}|$color ${cpu cpu9}${color3}% ${color5}${cpubar cpu9}
+${color4}CPU10:$color ${freq_g 10}${color3}GHz ${color5}|$color ${cpu cpu10}${color3}% ${color5}${cpubar cpu10}
+${color4}CPU11:$color ${freq_g 11}${color3}GHz ${color5}|$color ${cpu cpu11}${color3}% ${color5}${cpubar cpu11}
+${color4}CPU12:$color ${freq_g 12}${color3}GHz ${color5}|$color ${cpu cpu12}${color3}% ${color5}${cpubar cpu12}
+${color4}CPU13:$color ${freq_g 13}${color3}GHz ${color5}|$color ${cpu cpu13}${color3}% ${color5}${cpubar cpu13}
+${color4}CPU14:$color ${freq_g 14}${color3}GHz ${color5}|$color ${cpu cpu14}${color3}% ${color5}${cpubar cpu14}
+${color4}CPU15:$color ${freq_g 15}${color3}GHz ${color5}|$color ${cpu cpu15}${color3}% ${color5}${cpubar cpu15}
+${color4}CPU16:$color ${freq_g 16}${color3}GHz ${color5}|$color ${cpu cpu16}${color3}% ${color5}${cpubar cpu16}
+${color4}CPU17:$color ${freq_g 17}${color3}GHz ${color5}|$color ${cpu cpu17}${color3}% ${color5}${cpubar cpu17}
+${color4}CPU18:$color ${freq_g 18}${color3}GHz ${color5}|$color ${cpu cpu18}${color3}% ${color5}${cpubar cpu18}
+${color4}CPU19:$color ${freq_g 19}${color3}GHz ${color5}|$color ${cpu cpu19}${color3}% ${color5}${cpubar cpu19}
+${color4}CPU20:$color ${freq_g 20}${color3}GHz ${color5}|$color ${cpu cpu20}${color3}% ${color5}${cpubar cpu20}
+${color4}CPU21:$color ${freq_g 21}${color3}GHz ${color5}|$color ${cpu cpu21}${color3}% ${color5}${cpubar cpu21}
+${color4}CPU22:$color ${freq_g 22}${color3}GHz ${color5}|$color ${cpu cpu22}${color3}% ${color5}${cpubar cpu22}
+${color4}CPU23:$color ${freq_g 23}${color3}GHz ${color5}|$color ${cpu cpu23}${color3}% ${color5}${cpubar cpu23}
+${color4}CPU24:$color ${freq_g 24}${color3}GHz ${color5}|$color ${cpu cpu24}${color3}% ${color5}${cpubar cpu24}
+${color4}CPU25:$color ${freq_g 25}${color3}GHz ${color5}|$color ${cpu cpu25}${color3}% ${color5}${cpubar cpu25}
+${color4}CPU26:$color ${freq_g 26}${color3}GHz ${color5}|$color ${cpu cpu26}${color3}% ${color5}${cpubar cpu26}
+${color4}CPU27:$color ${freq_g 27}${color3}GHz ${color5}|$color ${cpu cpu27}${color3}% ${color5}${cpubar cpu27}
+${color4}CPU28:$color ${freq_g 28}${color3}GHz ${color5}|$color ${cpu cpu28}${color3}% ${color5}${cpubar cpu28}
+${color4}CPU29:$color ${freq_g 29}${color3}GHz ${color5}|$color ${cpu cpu29}${color3}% ${color5}${cpubar cpu29}
+${color4}CPU30:$color ${freq_g 30}${color3}GHz ${color5}|$color ${cpu cpu30}${color3}% ${color5}${cpubar cpu30}
+${color4}CPU31:$color ${freq_g 31}${color3}GHz ${color5}|$color ${cpu cpu31}${color3}% ${color5}${cpubar cpu31}
+${color4}CPU32:$color ${freq_g 32}${color3}GHz ${color5}|$color ${cpu cpu32}${color3}% ${color5}${cpubar cpu32}
+${color4}CPU33:$color ${freq_g 33}${color3}GHz ${color5}|$color ${cpu cpu33}${color3}% ${color5}${cpubar cpu33}
+${color4}CPU34:$color ${freq_g 34}${color3}GHz ${color5}|$color ${cpu cpu34}${color3}% ${color5}${cpubar cpu34}
+${color4}CPU35:$color ${freq_g 35}${color3}GHz ${color5}|$color ${cpu cpu35}${color3}% ${color5}${cpubar cpu35}
+${color4}CPU36:$color ${freq_g 36}${color3}GHz ${color5}|$color ${cpu cpu36}${color3}% ${color5}${cpubar cpu36}
+${color4}CPU37:$color ${freq_g 37}${color3}GHz ${color5}|$color ${cpu cpu37}${color3}% ${color5}${cpubar cpu37}
+${color4}CPU38:$color ${freq_g 38}${color3}GHz ${color5}|$color ${cpu cpu38}${color3}% ${color5}${cpubar cpu38}
+${color4}CPU39:$color ${freq_g 39}${color3}GHz ${color5}|$color ${cpu cpu39}${color3}% ${color5}${cpubar cpu39}
+${color4}CPU40:$color ${freq_g 40}${color3}GHz ${color5}|$color ${cpu cpu40}${color3}% ${color5}${cpubar cpu40}
+
+${color4}Name                                    PID       CPU${color3}%${color4}   MEM${color3}%
 ${font Monospace:size=8}$color${top name 1}     ${top pid 1}  ${top cpu 1}  ${top mem 1}
 ${top name 2}     ${top pid 2}  ${top cpu 2}  ${top mem 2}
 ${top name 3}     ${top pid 3}  ${top cpu 3}  ${top mem 3}
@@ -75,13 +109,19 @@ $font${color8}RAM: $mem/$memmax - $memperc% ${membar}
 ${color7}Swap: $swap/$swapmax - $swapperc% ${swapbar}
 ${color3}$stippled_hr
 $font${color4}Connections${alignr}${color5}In:$color ${tcp_portmon 1 32767 count}  ${color5}Out:$color ${tcp_portmon 32768 61000 count}   ${color5}ALL:$color ${tcp_portmon 1 65535 count}
-${color4}Traffic 
-${color5}${time %B} ${alignc}${color3}Down: $color${execi 60 vnstat -m -i wlp3s0 | grep "`LC_ALL=C date +"%b '%y"`" | awk '{print $3 $4}'} ${color3}${alignr}Up: $color${execi 60 vnstat -m -i wlp3s0 | grep "`LC_ALL=C date +"%b '%y"`" | awk '{print $6 $7}'}
-${color5}Today ${alignc}${color3}Down:$color ${execi 60 vnstat | grep "today" | awk '{print $2 $3}'} ${color3}${alignr}Up:$color ${execi 60 vnstat | grep "today" | awk '{print $5 $6}'}
-${color5}Now ${alignc}${color3}Down:$color ${downspeed wlp3s0} ${color3} ${alignr}Up:$color ${upspeed wlp3s0}
-${downspeedgraph wlp3s0 32,120 97418F 009bf9} ${offset 40} ${upspeedgraph wlp3s0 32,120 97418F 009bf9}
+${color4}Traffic
+${color5}${time %B} ${alignc}${color3}Down: $color${execi 60 vnstat -m -i enp7s0 | grep "`date +"%b '%y"`" | awk '{print $3 $4}'} ${color3}${alignr}Up: $color${execi 60 vnstat -m -i enp7s0 | grep "`date +"%b '%y"`" | awk '{print $6 $7}'}
+${color5}Today ${alignc}${color3}Down:$color ${execi 60 vnstat -i enp7s0 | grep "today" | awk '{print $2 $3}'} ${color3}${alignr}Up:$color ${execi 60 vnstat -i enp7s0 | grep "today" | awk '{print $5 $6}'}
+${color5}Now ${alignc}${color3}Down:$color ${downspeed enp7s0} ${color3} ${alignr}Up:$color ${upspeed enp7s0}
+${downspeedgraph enp7s0 32,120 97418F 009bf9} ${offset 40} ${upspeedgraph enp7s0 32,120 97418F 009bf9}
 ${color4}IPs:
-${color5}Local: $color ${addr wlp3s0} ${alignr}${color5}Global: $color ${execi 60 wget http://v4.ipv6-test.com/api/myip.php -q -O -}
+${color5}Local: $color ${addr enp7s0} ${alignr}${color5}Global: $color ${execi 60 wget http://v4.ipv6-test.com/api/myip.php -q -O -}
 ${color3}$stippled_hr
-${color4}Festplaten
-${color5}Festplatte:$color  ${fs_used /}/${fs_size /}  ${color7}${fs_bar /}
+${color4}Festplaten:
+${color5}ROOT:$color  ${fs_used /}/${fs_size /}  ${color7}${fs_bar /}
+${color5}Daten:$color  ${fs_used /mnt/Daten}/${fs_size /mnt/Daten}  ${color7}${fs_bar /mnt/Daten}
+${color5}Filme:$color  ${fs_used /mnt/Filme}/${fs_size /mnt/Filme}  ${color7}${fs_bar /mnt/Filme}
+${color5}Serien:$color  ${fs_used /mnt/Serien}/${fs_size /mnt/Serien}  ${color7}${fs_bar /mnt/Serien}
+${color5}Games:$color  ${fs_used /mnt/games}/${fs_size /mnt/games}  ${color7}${fs_bar /mnt/games}
+${color5}Wind:$color  ${fs_used /mnt/win}/${fs_size /mnt/win}  ${color7}${fs_bar /mnt/win}
+]]
