@@ -5,38 +5,41 @@
 conky.config = {
     background = true,
     update_interval = 1.0,
-    
+    total_run_times = 0,
+
     cpu_avg_samples = 2,
     net_avg_samples = 2,
     temperature_unit = 'celsius',
-    
+
     double_buffer = true,
     no_buffers = true,
-    
+
     gap_x = 1400,
     gap_y = 35,
     minimum_height = 2140,
     minimum_width = 2200,
-    
+
     own_window = true,
     own_window_class = 'Conky',
-    own_window_type = 'override',
+    own_window_type = 'desktop',
     own_window_transparent = true,
-    
+    own_window_argb_visual = true,
+    own_window_argb_value = 255,
+
     border_width = 1,
     draw_borders = false,
     draw_graph_borders = false,
     draw_outline = false,
     draw_shades = false,
-    
+
     alignment = 'top_left',
-    
+
     use_xft = true,
     font = 'ubuntu Visitor TT1 BRK:size=12',
     uppercase = false,
-    
+
     default_color = 'white',
-    
+
     color1 = '0088CC',
     
     lua_load = './main.lua',
